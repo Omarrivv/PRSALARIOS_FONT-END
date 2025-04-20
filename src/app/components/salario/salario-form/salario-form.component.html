@@ -1,0 +1,61 @@
+<div class="modal" *ngIf="visible">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>{{ isEdit ? 'Editar Salario' : 'Nuevo Registro de Salario' }}</h2>
+      <button class="btn-close" (click)="cerrar()">×</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="guardar()">
+      <div class="form-container">
+        <div class="form-group">
+          <label for="empleado">Empleado</label>
+          <select id="empleado" formControlName="empleado" required>
+            <option value="">Seleccione un empleado</option>
+            <option *ngFor="let emp of empleados" [value]="emp.idEmpleado">
+              {{emp.nombres}} {{emp.apellidos}} - {{emp.cargo.nombreCargo}}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="form.get('empleado')?.hasError('required') && form.get('empleado')?.touched">
+            Debe seleccionar un empleado
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="sueldoBase">Sueldo Base</label>
+          <input id="sueldoBase" type="number" formControlName="sueldoBase" required min="0" step="0.01">
+          <div class="error-message" *ngIf="form.get('sueldoBase')?.hasError('required') && form.get('sueldoBase')?.touched">
+            El sueldo base es requerido
+          </div>
+          <div class="error-message" *ngIf="form.get('sueldoBase')?.hasError('min')">
+            El sueldo base debe ser mayor a 0
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-6">
+            <label for="horasExtra">Horas Extra</label>
+            <input id="horasExtra" type="number" formControlName="horasExtra" min="0" step="0.01">
+            <div class="error-message" *ngIf="form.get('horasExtra')?.hasError('min')">
+              Las horas extra no pueden ser negativas
+            </div>
+          </div>
+
+          <div class="form-group col-6">
+            <label for="bonificaciones">Bonificaciones</label>
+            <input id="bonificaciones" type="number" formControlName="bonificaciones" min="0" step="0.01">
+            <div class="error-message" *ngIf="form.get('bonificaciones')?.hasError('min')">
+              Las bonificaciones no pueden ser negativas
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrar()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+          {{ isEdit ? 'Actualizar' : 'Guardar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div> 

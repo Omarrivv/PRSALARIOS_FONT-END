@@ -1,0 +1,43 @@
+<div class="modal" *ngIf="visible">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>{{ isEdit ? 'Editar Asignación Familiar' : 'Nueva Asignación Familiar' }}</h2>
+      <button class="btn-close" (click)="cerrar()">×</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="guardar()">
+      <div class="form-container">
+        <div class="form-group">
+          <label for="empleadoId">Empleado</label>
+          <select id="empleadoId" formControlName="empleadoId" required>
+            <option value="">Seleccione un empleado</option>
+            <option *ngFor="let empleado of empleados" [value]="empleado.idEmpleado">
+              {{empleado.nombres}} {{empleado.apellidos}} - {{empleado.cargo.nombreCargo}}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="form.get('empleadoId')?.hasError('required') && form.get('empleadoId')?.touched">
+            El empleado es requerido
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="cantidadHijos">Cantidad de Hijos</label>
+          <input id="cantidadHijos" type="number" formControlName="cantidadHijos" required min="0">
+          <div class="error-message" *ngIf="form.get('cantidadHijos')?.hasError('required') && form.get('cantidadHijos')?.touched">
+            La cantidad de hijos es requerida
+          </div>
+          <div class="error-message" *ngIf="form.get('cantidadHijos')?.hasError('min')">
+            La cantidad de hijos no puede ser negativa
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrar()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+          {{ isEdit ? 'Actualizar' : 'Guardar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div> 

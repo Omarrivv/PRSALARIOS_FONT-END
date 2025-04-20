@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="header">
+    <h1>Gestión de Empleados</h1>
+    <button class="btn btn-primary" (click)="abrirFormulario()">
+      <i class="icon">+</i>
+      Nuevo Empleado
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>DNI</th>
+          <th>Nombres</th>
+          <th>Apellidos</th>
+          <th>Cargo</th>
+          <th>Fecha de Nacimiento</th>
+          <th>Fecha de Ingreso</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let empleado of empleados">
+          <td>{{empleado.dni}}</td>
+          <td>{{empleado.nombres}}</td>
+          <td>{{empleado.apellidos}}</td>
+          <td>{{empleado.cargo.nombreCargo}}</td>
+          <td>{{empleado.fechaNacimiento | date:'dd/MM/yyyy'}}</td>
+          <td>{{empleado.fechaIngreso | date:'dd/MM/yyyy'}}</td>
+          <td>
+            <span [class]="empleado.estado === 'Activo' ? 'estado-activo' : 'estado-inactivo'">
+              {{empleado.estado}}
+            </span>
+          </td>
+          <td class="acciones">
+            <button class="btn-icon btn-primary" (click)="abrirFormulario(empleado)">
+              <i class="icon">✎</i>
+            </button>
+            <button class="btn-icon btn-danger" (click)="eliminarEmpleado(empleado.idEmpleado)">
+              <i class="icon">×</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <app-empleado-form
+    *ngIf="mostrarFormulario"
+    [empleado]="empleadoSeleccionado"
+    (guardarEmpleado)="onGuardarEmpleado()"
+    (cancelar)="onCancelar()">
+  </app-empleado-form>
+</div> 

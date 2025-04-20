@@ -13,23 +13,8 @@ export const routes: Routes = [
       .then(m => m.CargoListComponent)
   },
   {
-    path: 'salarios',
-    loadComponent: () => import('./components/salario/salario-list/salario-list.component')
-      .then(m => m.SalarioListComponent)
-  },
-  {
-    path: 'descuentos',
-    loadComponent: () => import('./components/descuento/descuento-list/descuento-list.component')
-      .then(m => m.DescuentoListComponent)
-  },
-  {
     path: 'asignaciones-familiares',
     loadComponent: () => import('./components/asignacion-familiar/asignacion-familiar-list/asignacion-familiar-list.component')
       .then(m => m.AsignacionFamiliarListComponent)
-  },
-  {
-    path: 'boletas-pago',
-    loadComponent: () => import('./components/boleta-pago/boleta-pago-list/boleta-pago-list.component')
-      .then(m => m.BoletaPagoListComponent)
   }
-];
+]; 

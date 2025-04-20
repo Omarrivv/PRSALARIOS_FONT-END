@@ -1,0 +1,68 @@
+<div class="modal" *ngIf="visible">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>{{ isEdit ? 'Editar Descuento' : 'Nuevo Registro de Descuento' }}</h2>
+      <button class="btn-close" (click)="cerrar()">×</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="guardar()">
+      <div class="form-container">
+        <div class="form-group">
+          <label for="empleado">Empleado</label>
+          <select id="empleado" formControlName="empleado" required>
+            <option value="">Seleccione un empleado</option>
+            <option *ngFor="let emp of empleados" [value]="emp.idEmpleado">
+              {{emp.nombres}} {{emp.apellidos}} - {{emp.cargo.nombreCargo}}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="form.get('empleado')?.hasError('required') && form.get('empleado')?.touched">
+            Debe seleccionar un empleado
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-6">
+            <label for="afp">AFP</label>
+            <input id="afp" type="number" formControlName="afp" min="0" step="0.01">
+            <div class="error-message" *ngIf="form.get('afp')?.hasError('min')">
+              El monto de AFP no puede ser negativo
+            </div>
+          </div>
+
+          <div class="form-group col-6">
+            <label for="onp">ONP</label>
+            <input id="onp" type="number" formControlName="onp" min="0" step="0.01">
+            <div class="error-message" *ngIf="form.get('onp')?.hasError('min')">
+              El monto de ONP no puede ser negativo
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-6">
+            <label for="essalud">EsSalud</label>
+            <input id="essalud" type="number" formControlName="essalud" min="0" step="0.01">
+            <div class="error-message" *ngIf="form.get('essalud')?.hasError('min')">
+              El monto de EsSalud no puede ser negativo
+            </div>
+          </div>
+
+          <div class="form-group col-6">
+            <label for="impuestoRenta">Impuesto a la Renta</label>
+            <input id="impuestoRenta" type="number" formControlName="impuestoRenta" min="0" step="0.01">
+            <div class="error-message" *ngIf="form.get('impuestoRenta')?.hasError('min')">
+              El monto del impuesto no puede ser negativo
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrar()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+          {{ isEdit ? 'Actualizar' : 'Guardar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div> 

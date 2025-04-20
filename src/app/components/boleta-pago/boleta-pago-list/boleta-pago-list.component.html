@@ -1,0 +1,104 @@
+<div class="container">
+  <div class="header">
+    <h2>Gestión de Boletas de Pago</h2>
+    <button class="btn btn-primary" (click)="abrirFormulario()">
+      <i class="icon">+</i>
+      Nueva Boleta de Pago
+    </button>
+  </div>
+
+  <div class="filtros" [formGroup]="filtroForm">
+    <div class="form-group">
+      <label for="fechaInicio">Fecha Inicio</label>
+      <input id="fechaInicio" type="date" formControlName="fechaInicio">
+    </div>
+    <div class="form-group">
+      <label for="fechaFin">Fecha Fin</label>
+      <input id="fechaFin" type="date" formControlName="fechaFin">
+    </div>
+    <div class="form-group">
+      <label for="idEmpleado">Empleado</label>
+      <input id="idEmpleado" type="number" formControlName="idEmpleado" placeholder="ID del empleado">
+    </div>
+    <button class="btn btn-secondary" (click)="filtrarBoletas()">Filtrar</button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Empleado</th>
+          <th>Fecha Emisión</th>
+          <th>Salario Bruto</th>
+          <th>Descuentos</th>
+          <th>Asignación Familiar</th>
+          <th>Total Neto</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let boleta of boletas">
+          <td>{{boleta.idBoleta}}</td>
+          <td>{{boleta.empleado.nombres}} {{boleta.empleado.apellidos}}</td>
+          <td>{{boleta.fechaEmision | date:'dd/MM/yyyy'}}</td>
+          <td>S/ {{boleta.salario.totalBruto | number:'1.2-2'}}</td>
+          <td>S/ {{boleta.descuento.totalDescuento | number:'1.2-2'}}</td>
+          <td>S/ {{boleta.asignacionFamiliar.montoAsignacion | number:'1.2-2'}}</td>
+          <td>S/ {{boleta.totalNeto | number:'1.2-2'}}</td>
+          <td class="acciones">
+            <button class="btn btn-info" (click)="verDetalle(boleta)">
+              <i class="icon">👁</i>
+            </button>
+            <button class="btn btn-warning" (click)="abrirFormulario(boleta)">
+              <i class="icon">✎</i>
+            </button>
+            <button class="btn btn-danger" (click)="eliminarBoleta(boleta.idBoleta!)">
+              <i class="icon">×</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <app-boleta-pago-form
+    *ngIf="mostrarFormulario"
+    [boleta]="boletaSeleccionada"
+    (guardarBoleta)="onGuardarBoleta()"
+    (cancelar)="onCancelar()">
+  </app-boleta-pago-form>
+
+  <!-- Modal de Detalle -->
+  <div class="modal" *ngIf="boletaDetalle">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Detalle de Boleta de Pago</h2>
+        <button class="btn-close" (click)="cerrarDetalle()">×</button>
+      </div>
+      <div class="detalle-container">
+        <div class="detalle-grupo">
+          <h3>Información del Empleado</h3>
+          <p><strong>Nombre:</strong> {{boletaDetalle.empleado.nombres}} {{boletaDetalle.empleado.apellidos}}</p>
+          <p><strong>Cargo:</strong> {{boletaDetalle.empleado.cargo.nombreCargo}}</p>
+          <p><strong>DNI:</strong> {{boletaDetalle.empleado.dni}}</p>
+        </div>
+        <div class="detalle-grupo">
+          <h3>Información de la Boleta</h3>
+          <p><strong>ID:</strong> {{boletaDetalle.idBoleta}}</p>
+          <p><strong>Fecha de Emisión:</strong> {{boletaDetalle.fechaEmision | date:'dd/MM/yyyy'}}</p>
+        </div>
+        <div class="detalle-grupo">
+          <h3>Detalle de Pagos</h3>
+          <p><strong>Salario Bruto:</strong> S/ {{boletaDetalle.salario.totalBruto | number:'1.2-2'}}</p>
+          <p><strong>Total Descuentos:</strong> S/ {{boletaDetalle.descuento.totalDescuento | number:'1.2-2'}}</p>
+          <p><strong>Asignación Familiar:</strong> S/ {{boletaDetalle.asignacionFamiliar.montoAsignacion | number:'1.2-2'}}</p>
+          <p><strong>Total Neto:</strong> S/ {{boletaDetalle.totalNeto | number:'1.2-2'}}</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="cerrarDetalle()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div> 

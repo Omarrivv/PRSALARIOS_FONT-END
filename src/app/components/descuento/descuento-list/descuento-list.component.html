@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="header">
+    <h2>Gestión de Descuentos</h2>
+    <button class="btn btn-primary" (click)="abrirFormulario()">
+      <i class="icon">+</i>
+      Nuevo Registro de Descuento
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Empleado</th>
+          <th>AFP</th>
+          <th>ONP</th>
+          <th>EsSalud</th>
+          <th>Impuesto a la Renta</th>
+          <th>Total Descuento</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let descuento of descuentos">
+          <td>{{descuento.empleado.nombres}} {{descuento.empleado.apellidos}}</td>
+          <td>S/ {{descuento.afp | number:'1.2-2'}}</td>
+          <td>S/ {{descuento.onp | number:'1.2-2'}}</td>
+          <td>S/ {{descuento.essalud | number:'1.2-2'}}</td>
+          <td>S/ {{descuento.impuestoRenta | number:'1.2-2'}}</td>
+          <td>S/ {{descuento.totalDescuento | number:'1.2-2'}}</td>
+          <td class="acciones">
+            <button class="btn btn-warning" (click)="abrirFormulario(descuento)">
+              <i class="icon">✎</i>
+            </button>
+            <button class="btn btn-danger" (click)="eliminarDescuento(descuento.idDescuento!)">
+              <i class="icon">×</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <app-descuento-form
+    *ngIf="mostrarFormulario"
+    [descuento]="descuentoSeleccionado"
+    (guardarDescuento)="onGuardarDescuento()"
+    (cancelar)="onCancelar()">
+  </app-descuento-form>
+</div> 

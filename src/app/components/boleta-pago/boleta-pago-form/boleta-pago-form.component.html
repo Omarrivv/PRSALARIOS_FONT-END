@@ -1,0 +1,77 @@
+<div class="modal" *ngIf="visible">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>{{ isEdit ? 'Editar' : 'Nueva' }} Boleta de Pago</h2>
+      <button class="btn-close" (click)="cerrar()">&times;</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="guardar()">
+      <div class="form-group">
+        <label for="empleadoId">Empleado:</label>
+        <select id="empleadoId" formControlName="empleadoId" class="form-control">
+          <option value="">Seleccione un empleado</option>
+          <option *ngFor="let empleado of empleados" [value]="empleado.idEmpleado">
+            {{ empleado.nombres }} {{ empleado.apellidos }}
+          </option>
+        </select>
+        <div class="error-message" *ngIf="form.get('empleadoId')?.touched && form.get('empleadoId')?.errors?.['required']">
+          El empleado es requerido
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="fechaEmision">Fecha de Emisión:</label>
+        <input type="date" id="fechaEmision" formControlName="fechaEmision" class="form-control">
+        <div class="error-message" *ngIf="form.get('fechaEmision')?.touched && form.get('fechaEmision')?.errors?.['required']">
+          La fecha de emisión es requerida
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="salarioId">Salario:</label>
+        <select id="salarioId" formControlName="salarioId" class="form-control">
+          <option value="">Seleccione un salario</option>
+          <option *ngFor="let salario of salarios" [value]="salario.idSalario">
+            {{ salario.sueldoBase| currency:'PEN':'symbol-narrow':'1.2-2' }}
+          </option>
+        </select>
+        <div class="error-message" *ngIf="form.get('salarioId')?.touched && form.get('salarioId')?.errors?.['required']">
+          El salario es requerido
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="descuentoId">Descuento:</label>
+        <select id="descuentoId" formControlName="descuentoId" class="form-control">
+          <option value="">Seleccione un descuento</option>
+          <option *ngFor="let descuento of descuentos" [value]="descuento.idDescuento">
+            Total descuento: {{ descuento.totalDescuento | currency:'PEN':'symbol-narrow':'1.2-2' }}
+          </option>
+        </select>
+        <div class="error-message" *ngIf="form.get('descuentoId')?.touched && form.get('descuentoId')?.errors?.['required']">
+          El descuento es requerido
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="asignacionId">Asignación Familiar:</label>
+        <select id="asignacionId" formControlName="asignacionId" class="form-control">
+          <option value="">Seleccione una asignación</option>
+          <option *ngFor="let asignacion of asignaciones" [value]="asignacion.idAsignacion">
+            {{ asignacion.empleado.nombres }} {{ asignacion.empleado.apellidos }} - {{ asignacion.montoAsignacion | currency:'PEN':'symbol-narrow':'1.2-2' }}
+          </option>
+        </select>
+        <div class="error-message" *ngIf="form.get('asignacionId')?.touched && form.get('asignacionId')?.errors?.['required']">
+          La asignación familiar es requerida
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrar()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!form.valid">
+          {{ isEdit ? 'Actualizar' : 'Guardar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div> 

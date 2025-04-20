@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="header">
+    <h2>Gestión de Asignaciones Familiares</h2>
+    <button class="btn btn-primary" (click)="abrirFormulario()">
+      <i class="icon">+</i>
+      Nueva Asignación Familiar
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Empleado</th>
+          <th>Cargo</th>
+          <th>Cantidad de Hijos</th>
+          <th>Monto Asignación</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let asignacion of asignaciones">
+          <td>{{asignacion.idAsignacion}}</td>
+          <td>{{asignacion.empleado.nombres}} {{asignacion.empleado.apellidos}}</td>
+          <td>{{asignacion.empleado.cargo.nombreCargo}}</td>
+          <td>{{asignacion.cantidadHijos}}</td>
+          <td>S/ {{asignacion.montoAsignacion | number:'1.2-2'}}</td>
+          <td class="acciones">
+            <button class="btn btn-info" (click)="verDetalle(asignacion)">
+              <i class="icon">👁</i>
+            </button>
+            <button class="btn btn-warning" (click)="abrirFormulario(asignacion)">
+              <i class="icon">✎</i>
+            </button>
+            <button class="btn btn-danger" (click)="eliminarAsignacion(asignacion.idAsignacion!)">
+              <i class="icon">×</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <app-asignacion-familiar-form
+    *ngIf="mostrarFormulario"
+    [asignacion]="asignacionSeleccionada"
+    (guardarAsignacion)="onGuardarAsignacion()"
+    (cancelar)="onCancelar()">
+  </app-asignacion-familiar-form>
+
+  <!-- Modal de Detalle -->
+  <div class="modal" *ngIf="asignacionDetalle">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Detalle de Asignación Familiar</h2>
+        <button class="btn-close" (click)="cerrarDetalle()">×</button>
+      </div>
+      <div class="detalle-container">
+        <div class="detalle-grupo">
+          <h3>Información del Empleado</h3>
+          <p><strong>Nombre:</strong> {{asignacionDetalle.empleado.nombres}} {{asignacionDetalle.empleado.apellidos}}</p>
+          <p><strong>Cargo:</strong> {{asignacionDetalle.empleado.cargo.nombreCargo}}</p>
+        </div>
+        <div class="detalle-grupo">
+          <h3>Información de la Asignación</h3>
+          <p><strong>ID:</strong> {{asignacionDetalle.idAsignacion}}</p>
+          <p><strong>Cantidad de Hijos:</strong> {{asignacionDetalle.cantidadHijos}}</p>
+          <p><strong>Monto de Asignación:</strong> S/ {{asignacionDetalle.montoAsignacion | number:'1.2-2'}}</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="cerrarDetalle()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div> 

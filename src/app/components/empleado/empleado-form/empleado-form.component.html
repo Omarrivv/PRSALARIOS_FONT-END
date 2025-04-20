@@ -1,0 +1,112 @@
+<div class="modal" *ngIf="visible">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>{{ isEdit ? 'Editar Empleado' : 'Nuevo Empleado' }}</h2>
+      <button class="btn-close" (click)="cerrar()">×</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="guardar()">
+      <div class="form-container">
+        <div class="row">
+          <div class="form-group col-6">
+            <label for="dni">DNI</label>
+            <input id="dni" type="text" formControlName="dni" required>
+            <div class="error-message" *ngIf="form.get('dni')?.hasError('required') && form.get('dni')?.touched">
+              El DNI es requerido
+            </div>
+            <div class="error-message" *ngIf="form.get('dni')?.hasError('pattern')">
+              El DNI debe tener 8 dígitos
+            </div>
+          </div>
+
+          <div class="form-group col-6">
+            <label for="telefono">Teléfono</label>
+            <input id="telefono" type="text" formControlName="telefono">
+            <div class="error-message" *ngIf="form.get('telefono')?.hasError('pattern')">
+              El teléfono debe tener 9 dígitos
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-6">
+            <label for="nombres">Nombres</label>
+            <input id="nombres" type="text" formControlName="nombres" required>
+            <div class="error-message" *ngIf="form.get('nombres')?.hasError('required') && form.get('nombres')?.touched">
+              Los nombres son requeridos
+            </div>
+          </div>
+
+          <div class="form-group col-6">
+            <label for="apellidos">Apellidos</label>
+            <input id="apellidos" type="text" formControlName="apellidos" required>
+            <div class="error-message" *ngIf="form.get('apellidos')?.hasError('required') && form.get('apellidos')?.touched">
+              Los apellidos son requeridos
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-6">
+            <label for="fechaNacimiento">Fecha de Nacimiento</label>
+            <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento" required>
+            <div class="error-message" *ngIf="form.get('fechaNacimiento')?.hasError('required') && form.get('fechaNacimiento')?.touched">
+              La fecha de nacimiento es requerida
+            </div>
+          </div>
+
+          <div class="form-group col-6">
+            <label for="fechaIngreso">Fecha de Ingreso</label>
+            <input id="fechaIngreso" type="date" formControlName="fechaIngreso" required>
+            <div class="error-message" *ngIf="form.get('fechaIngreso')?.hasError('required') && form.get('fechaIngreso')?.touched">
+              La fecha de ingreso es requerida
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" formControlName="email">
+          <div class="error-message" *ngIf="form.get('email')?.hasError('email')">
+            Ingrese un email válido
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="direccion">Dirección</label>
+          <textarea id="direccion" formControlName="direccion" rows="2"></textarea>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-6">
+            <label for="cargo">Cargo</label>
+            <select id="cargo" formControlName="cargo" required>
+              <option value="">Seleccione un cargo</option>
+              <option *ngFor="let cargo of cargos" [value]="cargo.idCargo">
+                {{cargo.nombreCargo}}
+              </option>
+            </select>
+            <div class="error-message" *ngIf="form.get('cargo')?.hasError('required') && form.get('cargo')?.touched">
+              El cargo es requerido
+            </div>
+          </div>
+
+          <div class="form-group col-6">
+            <label for="estado">Estado</label>
+            <select id="estado" formControlName="estado" required>
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrar()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+          {{ isEdit ? 'Actualizar' : 'Guardar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div> 

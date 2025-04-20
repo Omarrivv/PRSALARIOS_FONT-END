@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="header">
+    <h2>Lista de Cargos</h2>
+    <button class="btn btn-primary" (click)="abrirFormulario()">Nuevo Cargo</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre del Cargo</th>
+        <th>Descripción</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cargo of cargos">
+        <td>{{cargo.idCargo}}</td>
+        <td>{{cargo.nombreCargo}}</td>
+        <td>{{cargo.descripcion}}</td>
+        <td class="acciones">
+          <button class="btn btn-warning" (click)="editar(cargo)">
+            <i class="icon">✎</i>
+          </button>
+          <button class="btn btn-danger" (click)="eliminar(cargo)">
+            <i class="icon">×</i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <app-cargo-form 
+    *ngIf="mostrarFormulario"
+    [cargo]="cargoSeleccionado"
+    (guardarCargo)="onGuardarCargo()"
+    (cancelar)="onCancelar()">
+  </app-cargo-form>
+</div> 
