@@ -1,112 +1,276 @@
 <div class="modal" *ngIf="visible">
   <div class="modal-content">
     <div class="modal-header">
-      <h2>{{ isEdit ? 'Editar Empleado' : 'Nuevo Empleado' }}</h2>
+      <h2>{{ isEdit ? 'Editar' : 'Nuevo' }} Empleado</h2>
       <button class="btn-close" (click)="cerrar()">×</button>
     </div>
 
-    <form [formGroup]="form" (ngSubmit)="guardar()">
-      <div class="form-container">
-        <div class="row">
-          <div class="form-group col-6">
-            <label for="dni">DNI</label>
-            <input id="dni" type="text" formControlName="dni" required>
-            <div class="error-message" *ngIf="form.get('dni')?.hasError('required') && form.get('dni')?.touched">
-              El DNI es requerido
-            </div>
-            <div class="error-message" *ngIf="form.get('dni')?.hasError('pattern')">
-              El DNI debe tener 8 dígitos
-            </div>
-          </div>
+    <form [formGroup]="form" (ngSubmit)="guardar()" class="empleado-form">
+      <!-- Mensaje de error general -->
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
 
-          <div class="form-group col-6">
-            <label for="telefono">Teléfono</label>
-            <input id="telefono" type="text" formControlName="telefono">
-            <div class="error-message" *ngIf="form.get('telefono')?.hasError('pattern')">
-              El teléfono debe tener 9 dígitos
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group col-6">
-            <label for="nombres">Nombres</label>
-            <input id="nombres" type="text" formControlName="nombres" required>
-            <div class="error-message" *ngIf="form.get('nombres')?.hasError('required') && form.get('nombres')?.touched">
-              Los nombres son requeridos
-            </div>
-          </div>
-
-          <div class="form-group col-6">
-            <label for="apellidos">Apellidos</label>
-            <input id="apellidos" type="text" formControlName="apellidos" required>
-            <div class="error-message" *ngIf="form.get('apellidos')?.hasError('required') && form.get('apellidos')?.touched">
-              Los apellidos son requeridos
-            </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="dni">DNI *</label>
+          <input
+            id="dni"
+            type="text"
+            formControlName="dni"
+            class="form-control"
+            [class.is-invalid]="dniControl?.invalid && dniControl?.touched"
+            maxlength="8"
+          >
+          <div class="invalid-feedback" *ngIf="dniControl?.invalid && dniControl?.touched">
+            <span *ngIf="dniControl?.errors?.['required']">El DNI es requerido</span>
+            <span *ngIf="dniControl?.errors?.['pattern']">El DNI debe tener 8 dígitos numéricos</span>
           </div>
         </div>
 
-        <div class="row">
-          <div class="form-group col-6">
-            <label for="fechaNacimiento">Fecha de Nacimiento</label>
-            <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento" required>
-            <div class="error-message" *ngIf="form.get('fechaNacimiento')?.hasError('required') && form.get('fechaNacimiento')?.touched">
-              La fecha de nacimiento es requerida
-            </div>
+        <div class="form-group">
+          <label for="nombres">Nombres *</label>
+          <input
+            id="nombres"
+            type="text"
+            formControlName="nombres"
+            class="form-control"
+            [class.is-invalid]="nombresControl?.invalid && nombresControl?.touched"
+          >
+          <div class="invalid-feedback" *ngIf="nombresControl?.invalid && nombresControl?.touched">
+            <span *ngIf="nombresControl?.errors?.['required']">Los nombres son requeridos</span>
+            <span *ngIf="nombresControl?.errors?.['minlength']">Los nombres deben tener al menos 2 caracteres</span>
+            <span *ngIf="nombresControl?.errors?.['maxlength']">Los nombres no pueden exceder 50 caracteres</span>
+            <span *ngIf="nombresControl?.errors?.['pattern']">Los nombres solo pueden contener letras y espacios</span>
           </div>
+        </div>
 
-          <div class="form-group col-6">
-            <label for="fechaIngreso">Fecha de Ingreso</label>
-            <input id="fechaIngreso" type="date" formControlName="fechaIngreso" required>
-            <div class="error-message" *ngIf="form.get('fechaIngreso')?.hasError('required') && form.get('fechaIngreso')?.touched">
-              La fecha de ingreso es requerida
-            </div>
+        <div class="form-group">
+          <label for="apellidos">Apellidos *</label>
+          <input
+            id="apellidos"
+            type="text"
+            formControlName="apellidos"
+            class="form-control"
+            [class.is-invalid]="apellidosControl?.invalid && apellidosControl?.touched"
+          >
+          <div class="invalid-feedback" *ngIf="apellidosControl?.invalid && apellidosControl?.touched">
+            <span *ngIf="apellidosControl?.errors?.['required']">Los apellidos son requeridos</span>
+            <span *ngIf="apellidosControl?.errors?.['minlength']">Los apellidos deben tener al menos 2 caracteres</span>
+            <span *ngIf="apellidosControl?.errors?.['maxlength']">Los apellidos no pueden exceder 50 caracteres</span>
+            <span *ngIf="apellidosControl?.errors?.['pattern']">Los apellidos solo pueden contener letras y espacios</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input
+            id="telefono"
+            type="text"
+            formControlName="telefono"
+            class="form-control"
+            [class.is-invalid]="telefonoControl?.invalid && telefonoControl?.touched"
+            maxlength="9"
+          >
+          <div class="invalid-feedback" *ngIf="telefonoControl?.invalid && telefonoControl?.touched">
+            <span *ngIf="telefonoControl?.errors?.['pattern']">El teléfono debe tener 9 dígitos numéricos</span>
           </div>
         </div>
 
         <div class="form-group">
           <label for="email">Email</label>
-          <input id="email" type="email" formControlName="email">
-          <div class="error-message" *ngIf="form.get('email')?.hasError('email')">
-            Ingrese un email válido
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="form-control"
+            [class.is-invalid]="emailControl?.invalid && emailControl?.touched"
+          >
+          <div class="invalid-feedback" *ngIf="emailControl?.invalid && emailControl?.touched">
+            <span *ngIf="emailControl?.errors?.['email']">El formato del email no es válido</span>
+            <span *ngIf="emailControl?.errors?.['pattern']">El formato del email no es válido</span>
           </div>
         </div>
 
         <div class="form-group">
           <label for="direccion">Dirección</label>
-          <textarea id="direccion" formControlName="direccion" rows="2"></textarea>
+          <input
+            id="direccion"
+            type="text"
+            formControlName="direccion"
+            class="form-control"
+            [class.is-invalid]="form.get('direccion')?.invalid && form.get('direccion')?.touched"
+          >
+          <div class="invalid-feedback" *ngIf="form.get('direccion')?.invalid && form.get('direccion')?.touched">
+            <span *ngIf="form.get('direccion')?.errors?.['maxlength']">La dirección no puede exceder 200 caracteres</span>
+          </div>
         </div>
 
-        <div class="row">
-          <div class="form-group col-6">
-            <label for="cargo">Cargo</label>
-            <select id="cargo" formControlName="cargo" required>
-              <option value="">Seleccione un cargo</option>
-              <option *ngFor="let cargo of cargos" [value]="cargo.idCargo">
-                {{cargo.nombreCargo}}
-              </option>
-            </select>
-            <div class="error-message" *ngIf="form.get('cargo')?.hasError('required') && form.get('cargo')?.touched">
-              El cargo es requerido
-            </div>
+        <div class="form-group">
+          <label for="fechaNacimiento">Fecha de Nacimiento *</label>
+          <input
+            id="fechaNacimiento"
+            type="date"
+            formControlName="fechaNacimiento"
+            class="form-control"
+            [class.is-invalid]="fechaNacimientoControl?.invalid && fechaNacimientoControl?.touched"
+          >
+          <div class="invalid-feedback" *ngIf="fechaNacimientoControl?.invalid && fechaNacimientoControl?.touched">
+            <span *ngIf="fechaNacimientoControl?.errors?.['required']">La fecha de nacimiento es requerida</span>
+            <span *ngIf="fechaNacimientoControl?.errors?.['fechaFutura']">La fecha no puede ser futura</span>
+            <span *ngIf="fechaNacimientoControl?.errors?.['edadMinima']">La edad mínima es 18 años</span>
+            <span *ngIf="fechaNacimientoControl?.errors?.['edadMaxima']">La edad máxima es 70 años</span>
           </div>
+        </div>
 
-          <div class="form-group col-6">
-            <label for="estado">Estado</label>
-            <select id="estado" formControlName="estado" required>
-              <option value="Activo">Activo</option>
-              <option value="Inactivo">Inactivo</option>
-            </select>
+        <div class="form-group">
+          <label for="fechaIngreso">Fecha de Ingreso *</label>
+          <input
+            id="fechaIngreso"
+            type="date"
+            formControlName="fechaIngreso"
+            class="form-control"
+            [class.is-invalid]="fechaIngresoControl?.invalid && fechaIngresoControl?.touched"
+          >
+          <div class="invalid-feedback" *ngIf="fechaIngresoControl?.invalid && fechaIngresoControl?.touched">
+            <span *ngIf="fechaIngresoControl?.errors?.['required']">La fecha de ingreso es requerida</span>
+            <span *ngIf="fechaIngresoControl?.errors?.['fechaFutura']">La fecha no puede ser futura</span>
+            <span *ngIf="fechaIngresoControl?.errors?.['fechaIngresoInvalida']">La fecha de ingreso debe ser posterior a los 18 años de edad</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="cargo">Cargo *</label>
+          <select
+            id="cargo"
+            formControlName="cargo"
+            class="form-control"
+            [class.is-invalid]="cargoControl?.invalid && cargoControl?.touched"
+          >
+            <option value="">Seleccione un cargo</option>
+            <option *ngFor="let cargo of cargos" [value]="cargo.idCargo">
+              {{ cargo.nombreCargo }}
+            </option>
+          </select>
+          <div class="invalid-feedback" *ngIf="cargoControl?.invalid && cargoControl?.touched">
+            <span *ngIf="cargoControl?.errors?.['required']">El cargo es requerido</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="estado">Estado *</label>
+          <select
+            id="estado"
+            formControlName="estado"
+            class="form-control"
+            [class.is-invalid]="form.get('estado')?.invalid && form.get('estado')?.touched"
+          >
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="form.get('estado')?.invalid && form.get('estado')?.touched">
+            <span *ngIf="form.get('estado')?.errors?.['required']">El estado es requerido</span>
           </div>
         </div>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="cerrar()">Cancelar</button>
-        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
-          {{ isEdit ? 'Actualizar' : 'Guardar' }}
+        <button type="button" class="btn btn-secondary" (click)="cerrar()" [disabled]="enviandoFormulario">Cancelar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid || enviandoFormulario">
+          {{ enviandoFormulario ? 'Guardando...' : (isEdit ? 'Actualizar' : 'Guardar') }}
         </button>
       </div>
     </form>
   </div>
-</div> 
+</div>
+
+<style>
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.empleado-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  display: block;
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.alert {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #545b62;
+}
+</style> 
