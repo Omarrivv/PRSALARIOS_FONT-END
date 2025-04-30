@@ -42,10 +42,10 @@
           <td>{{boleta.idBoleta}}</td>
           <td>{{boleta.empleado.nombres}} {{boleta.empleado.apellidos}}</td>
           <td>{{boleta.fechaEmision | date:'dd/MM/yyyy'}}</td>
-          <td>S/ {{boleta.salario.totalBruto | number:'1.2-2'}}</td>
-          <td>S/ {{boleta.descuento.totalDescuento | number:'1.2-2'}}</td>
-          <td>S/ {{boleta.asignacionFamiliar.montoAsignacion | number:'1.2-2'}}</td>
-          <td>S/ {{boleta.totalNeto | number:'1.2-2'}}</td>
+          <td>{{boleta.salario.totalBruto | currencyFormat}}</td>
+          <td>{{boleta.descuento.totalDescuento | currencyFormat}}</td>
+          <td>{{boleta.asignacionFamiliar.montoAsignacion | currencyFormat}}</td>
+          <td>{{boleta.totalNeto | currencyFormat}}</td>
           <td class="acciones">
             <button class="btn btn-info" (click)="verDetalle(boleta)">
               <i class="icon">👁</i>

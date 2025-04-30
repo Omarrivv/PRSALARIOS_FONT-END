@@ -77,6 +77,10 @@ export class BoletaPagoFormComponent implements OnInit {
   visible = true;
   isEdit = false;
 
+  private todosSalarios: Salario[] = [];
+  private todosDescuentos: Descuento[] = [];
+  private todasAsignaciones: AsignacionFamiliar[] = [];
+
   constructor(
     private fb: FormBuilder,
     private boletaService: BoletaPagoService,
@@ -96,6 +100,11 @@ export class BoletaPagoFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarDatos();
+    this.form.get('empleadoId')?.valueChanges.subscribe((empleadoId) => {
+      this.filtrarDatosPorEmpleado(empleadoId);
+      // Limpiar selección de salario, descuento y asignación al cambiar empleado
+      this.form.patchValue({ salarioId: '', descuentoId: '', asignacionId: '' });
+    });
     if (this.boleta) {
       this.isEdit = true;
       this.form.patchValue({
@@ -115,19 +124,40 @@ export class BoletaPagoFormComponent implements OnInit {
     });
 
     this.salarioService.listar().subscribe({
-      next: (salarios) => this.salarios = salarios,
+      next: (salarios) => {
+        this.todosSalarios = salarios;
+        this.salarios = salarios;
+      },
       error: () => this.mostrarNotificacion('Error al cargar los salarios')
     });
 
     this.descuentoService.listar().subscribe({
-      next: (descuentos) => this.descuentos = descuentos,
+      next: (descuentos) => {
+        this.todosDescuentos = descuentos;
+        this.descuentos = descuentos;
+      },
       error: () => this.mostrarNotificacion('Error al cargar los descuentos')
     });
 
     this.asignacionService.listar().subscribe({
-      next: (asignaciones) => this.asignaciones = asignaciones,
+      next: (asignaciones) => {
+        this.todasAsignaciones = asignaciones;
+        this.asignaciones = asignaciones;
+      },
       error: () => this.mostrarNotificacion('Error al cargar las asignaciones')
     });
+  }
+
+  filtrarDatosPorEmpleado(empleadoId: number) {
+    if (!empleadoId) {
+      this.salarios = this.todosSalarios;
+      this.descuentos = this.todosDescuentos;
+      this.asignaciones = this.todasAsignaciones;
+      return;
+    }
+    this.salarios = this.todosSalarios.filter(s => s.empleado.idEmpleado === +empleadoId);
+    this.descuentos = this.todosDescuentos.filter(d => d.empleado.idEmpleado === +empleadoId);
+    this.asignaciones = this.todasAsignaciones.filter(a => a.empleado.idEmpleado === +empleadoId);
   }
 
   guardar(): void {

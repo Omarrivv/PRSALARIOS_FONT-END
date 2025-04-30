@@ -52,7 +52,7 @@ import { Subscription } from 'rxjs';
             <span>Descuentos</span>
           </a>
           <a routerLink="/asignaciones" routerLinkActive="active" class="nav-item">
-            <i class="fas fa-users-family"></i>
+            <i class="fas fa-users"></i>
             <span>Asignaciones</span>
           </a>
           <a routerLink="/boletas" routerLinkActive="active" class="nav-item">
@@ -124,18 +124,20 @@ import { Subscription } from 'rxjs';
     .dashboard-container {
       display: flex;
       min-height: 100vh;
-      background-color: #0f172a;
+      background-color: #0a1931;
     }
 
     /* Sidebar Styles */
     .sidebar {
       width: 260px;
-      background: linear-gradient(180deg, #1e293b, #0f172a);
+      background: linear-gradient(180deg, #162447 0%, #1f4068 100%);
       color: #e2e8f0;
       display: flex;
       flex-direction: column;
-      box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 4px 0 20px 0 rgba(59, 130, 246, 0.15);
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      z-index: 10;
     }
 
     .sidebar-header {
@@ -143,17 +145,19 @@ import { Subscription } from 'rxjs';
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(30, 41, 59, 0.5);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(22, 36, 71, 0.7);
+      box-shadow: 0 2px 8px 0 rgba(59, 130, 246, 0.08);
     }
 
     .sidebar-header h1 {
       margin: 0;
-      font-size: 1.5rem;
-      font-weight: 600;
-      background: linear-gradient(135deg, #60a5fa, #3b82f6);
+      font-size: 1.6rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #43c6f9, #1f4068, #e0e7ef);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
     }
 
     .collapse-btn {
@@ -176,53 +180,61 @@ import { Subscription } from 'rxjs';
       display: flex;
       align-items: center;
       gap: 1rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(30, 41, 59, 0.3);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(31, 64, 104, 0.5);
+      box-shadow: 0 2px 8px 0 rgba(59, 130, 246, 0.05);
     }
 
     .avatar {
-      width: 45px;
-      height: 45px;
-      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #43c6f9, #1f4068, #e0e7ef);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+      box-shadow: 0 0 18px 0 rgba(59, 130, 246, 0.18);
+      border: 2px solid #fff3;
     }
 
     .avatar i {
-      font-size: 1.5rem;
-      color: #ffffff;
+      font-size: 1.7rem;
+      color: #fff;
+      filter: drop-shadow(0 0 4px #43c6f9);
     }
 
     .user-info h3 {
       margin: 0;
-      font-size: 1rem;
-      font-weight: 500;
+      font-size: 1.1rem;
+      font-weight: 600;
       color: #f1f5f9;
     }
 
     .user-info .role {
-      font-size: 0.8rem;
-      color: #94a3b8;
+      font-size: 0.85rem;
+      color: #43c6f9;
+      font-weight: 500;
     }
 
     .nav-menu {
       padding: 1rem 0;
       display: flex;
       flex-direction: column;
+      gap: 0.2rem;
     }
 
     .nav-item {
       display: flex;
       align-items: center;
       gap: 1rem;
-      padding: 0.8rem 1.5rem;
-      color: #e2e8f0;
+      padding: 0.85rem 1.5rem;
+      color: #e0e7ef;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: all 0.2s;
       position: relative;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 1.05rem;
       overflow: hidden;
     }
 
@@ -233,13 +245,16 @@ import { Subscription } from 'rxjs';
       top: 0;
       height: 100%;
       width: 4px;
-      background: #3b82f6;
+      background: linear-gradient(180deg, #43c6f9, #e0e7ef);
       transform: scaleY(0);
-      transition: transform 0.3s ease;
+      transition: transform 0.3s;
+      border-radius: 4px;
     }
 
     .nav-item:hover {
-      background: rgba(59, 130, 246, 0.1);
+      background: linear-gradient(90deg, #43c6f933 0%, #e0e7ef33 100%);
+      color: #43c6f9;
+      box-shadow: 0 2px 12px 0 rgba(67, 198, 249, 0.08);
     }
 
     .nav-item:hover::before {
@@ -247,7 +262,9 @@ import { Subscription } from 'rxjs';
     }
 
     .nav-item.active {
-      background: rgba(59, 130, 246, 0.15);
+      background: linear-gradient(90deg, #43c6f944 0%, #1f406844 100%);
+      color: #43c6f9;
+      font-weight: 700;
     }
 
     .nav-item.active::before {
@@ -255,13 +272,15 @@ import { Subscription } from 'rxjs';
     }
 
     .nav-item i {
-      font-size: 1.2rem;
-      width: 1.5rem;
-      color: #60a5fa;
-      transition: transform 0.3s ease;
+      font-size: 1.25rem;
+      width: 1.7rem;
+      color: #43c6f9;
+      transition: color 0.2s, transform 0.2s;
     }
 
+    .nav-item.active i,
     .nav-item:hover i {
+      color: #43c6f9;
       transform: scale(1.1);
     }
 
@@ -270,23 +289,30 @@ import { Subscription } from 'rxjs';
       flex: 1;
       display: flex;
       flex-direction: column;
+      background: linear-gradient(135deg, #e0e7ef 0%, #c9d6ff 100%);
+      min-height: 100vh;
+      /*border-top-left-radius: 24px;*/
+      box-shadow: 0 0 32px 0 rgba(59,130,246,0.08);
     }
 
     .main-header {
-      background: #1e293b;
-      padding: 1rem 2rem;
+      background: linear-gradient(90deg, #162447 60%, #1f4068 100%);
+      padding: 1.5rem 2.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 6px 24px 0 rgba(67, 198, 249, 0.10);
+      border-bottom: none;
+      /*border-top-left-radius: 24px;*/
     }
 
     .main-header h2 {
       margin: 0;
-      font-size: 1.25rem;
-      color: #f1f5f9;
-      font-weight: 500;
+      font-size: 1.5rem;
+      color: #e0e7ef;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px #3b82f655;
     }
 
     .header-actions {

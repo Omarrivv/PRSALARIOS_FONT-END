@@ -25,7 +25,7 @@
           <td>{{asignacion.empleado.nombres}} {{asignacion.empleado.apellidos}}</td>
           <td>{{asignacion.empleado.cargo.nombreCargo}}</td>
           <td>{{asignacion.cantidadHijos}}</td>
-          <td>S/ {{asignacion.montoAsignacion | number:'1.2-2'}}</td>
+          <td>{{asignacion.montoAsignacion | currencyFormat}}</td>
           <td class="acciones">
             <button class="btn btn-info" (click)="verDetalle(asignacion)">
               <i class="icon">👁</i>

@@ -4,6 +4,7 @@ import { Chart } from 'chart.js/auto';
 import { EmpleadoService } from '../../services/empleado.service';
 import { CargoService } from '../../services/cargo.service';
 import { SalarioService } from '../../services/salario.service';
+import { CurrencyFormatPipe } from '../../pipes/currency.pipe';
 
 interface RotacionData {
   ingresos: { [key: string]: number };
@@ -13,7 +14,7 @@ interface RotacionData {
 @Component({
   selector: 'app-inicio',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CurrencyFormatPipe],
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']
 })
@@ -198,6 +199,8 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   private crearGraficoSalarios(data: any): void {
+    const canvas = document.getElementById('salaryChart') as HTMLCanvasElement | null;
+    if (!canvas) return;
     const chartOptions = {
       responsive: true,
       plugins: {
@@ -226,7 +229,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
       }
     };
 
-    new Chart('salaryChart', {
+    new Chart(canvas, {
       type: 'bar',
       data: {
         labels: Object.keys(data),
@@ -242,7 +245,9 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   private crearGraficoEmpleadosPorCargo(data: any): void {
-    new Chart('employeeChart', {
+    const canvas = document.getElementById('employeeChart') as HTMLCanvasElement | null;
+    if (!canvas) return;
+    new Chart(canvas, {
       type: 'doughnut',
       data: {
         labels: Object.keys(data),
@@ -272,6 +277,8 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   private crearGraficoTendenciaContrataciones(data: any): void {
+    const canvas = document.getElementById('hiringChart') as HTMLCanvasElement | null;
+    if (!canvas) return;
     const chartOptions = {
       responsive: true,
       plugins: {
@@ -300,7 +307,7 @@ export class InicioComponent implements OnInit, AfterViewInit {
       }
     };
 
-    new Chart('hiringChart', {
+    new Chart(canvas, {
       type: 'line',
       data: {
         labels: Object.keys(data),
@@ -318,7 +325,9 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   private crearGraficoEdad(data: any): void {
-    new Chart('ageChart', {
+    const canvas = document.getElementById('ageChart') as HTMLCanvasElement | null;
+    if (!canvas) return;
+    new Chart(canvas, {
       type: 'pie',
       data: {
         labels: Object.keys(data),
@@ -345,7 +354,9 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   private crearGraficoRotacion(data: RotacionData): void {
-    new Chart('turnoverChart', {
+    const canvas = document.getElementById('turnoverChart') as HTMLCanvasElement | null;
+    if (!canvas) return;
+    new Chart(canvas, {
       type: 'line',
       data: {
         labels: Object.keys(data.ingresos),
@@ -390,7 +401,9 @@ export class InicioComponent implements OnInit, AfterViewInit {
   }
 
   private crearGraficoCostosPlanilla(data: any): void {
-    new Chart('payrollCostChart', {
+    const canvas = document.getElementById('payrollCostChart') as HTMLCanvasElement | null;
+    if (!canvas) return;
+    new Chart(canvas, {
       type: 'bar',
       data: {
         labels: Object.keys(data),

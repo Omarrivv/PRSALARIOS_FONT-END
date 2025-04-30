@@ -4,11 +4,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { AsignacionFamiliarService } from '../../../services/asignacion-familiar.service';
 import { AsignacionFamiliar } from '../../../models/asignacion-familiar.model';
 import { AsignacionFamiliarFormComponent } from '../asignacion-familiar-form/asignacion-familiar-form.component';
+import { CurrencyFormatPipe } from '../../../pipes/currency.pipe';
 
 @Component({
   selector: 'app-asignacion-familiar-list',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, AsignacionFamiliarFormComponent],
+  imports: [CommonModule, HttpClientModule, AsignacionFamiliarFormComponent, CurrencyFormatPipe],
   templateUrl: './asignacion-familiar-list.component.html',
   providers: [AsignacionFamiliarService],
   styles: [`

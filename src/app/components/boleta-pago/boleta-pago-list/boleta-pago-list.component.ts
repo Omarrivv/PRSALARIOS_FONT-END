@@ -5,11 +5,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { BoletaPagoService } from '../../../services/boleta-pago.service';
 import { BoletaPago } from '../../../models/boleta-pago.model';
 import { BoletaPagoFormComponent } from '../boleta-pago-form/boleta-pago-form.component';
-
+import { CurrencyFormatPipe } from '../../../pipes/currency.pipe';
 @Component({
   selector: 'app-boleta-pago-list',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule, BoletaPagoFormComponent],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule, BoletaPagoFormComponent, CurrencyFormatPipe],
   templateUrl: './boleta-pago-list.component.html',
   styles: [`
     .filtros {
